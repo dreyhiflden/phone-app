@@ -10,6 +10,10 @@ class Products extends BaseComponent {
     super(params);
 
     this._initComponents();
+
+    this._eventEmitter.subscribe('searchUpdated', (query) => this.searchUpdated(query));
+    this._eventEmitter.subscribe('sortUpdated', (query) => this.sortUpdated(query));
+    this._eventEmitter.subscribe('clearedSearch', () => this.clearedSearch());
   }
 
   _render() {
@@ -30,23 +34,23 @@ class Products extends BaseComponent {
   _initComponents() {
     this._search = new Search({
       element: this._element.querySelector('[data-component="search"]'),
-      parent: this,
+      eventEmitter: this._eventEmitter,
     });
 
     this._sort = new Sort({
       element: this._element.querySelector('[data-component="sort"]'),
-      parent: this,
+      eventEmitter: this._eventEmitter,
     });
 
     this._shoppingCart = new ShoppingCart({
       element: this._element.querySelector('[data-component="shopping-cart"]'),
-      parent: this,
+      eventEmitter: this._eventEmitter,
     });
 
     this._productList = new ProductList({
       element: this._element.querySelector('[data-component="product-list"]'),
       products: PhoneService.getAll(),
-      parent: this,
+      eventEmitter: this._eventEmitter,
     });
   }
 
@@ -58,18 +62,9 @@ class Products extends BaseComponent {
     this._productList.products = PhoneService.getSorted(value);
   }
 
-  phoneSelected(phoneId) {
-    this._parent.phoneSelected(phoneId);
-  }
-
   clearedSearch() {
     this._search._element.querySelector('input').value = ''
   }
-
-  addedToCart(item) {
-    this._shoppingCart.addItem(item);
-  }
-
 }
 
 export default Products;

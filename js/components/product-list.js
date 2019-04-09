@@ -19,7 +19,7 @@ class ProductList extends BaseComponent {
       lis.push(`
         <li class="thumbnail">
           <a href="#" data-product-id="${this._products[i].id}" class="thumb">
-            <img alt="${this._products[i].name}" src="${this._products[i].imageUrl}">
+              <img alt="${this._products[i].name}" src="${this._products[i].imageUrl}">
           </a>
           <a href="#" data-product-id="${this._products[i].id}">${this._products[i].name}</a>
           <p>${this._products[i].snippet}</p>
@@ -27,10 +27,10 @@ class ProductList extends BaseComponent {
     }
 
     this._element.innerHTML = `
-           <ul class="phones">
-             ${lis.join('')}
-           </ul>
-         `;
+       <ul class="phones">
+         ${lis.join('')}
+       </ul>
+      `;
 
     this._addListeners();
   }
@@ -46,9 +46,7 @@ class ProductList extends BaseComponent {
         if (event.target.closest('a') !== null) {
           event.preventDefault();
 
-          this._parent.phoneSelected(
-            event.target.closest('a').dataset.productId
-          );
+          this._eventEmitter.emit('phoneSelected', event.target.closest('a').dataset.productId);
         }
       });
   }
