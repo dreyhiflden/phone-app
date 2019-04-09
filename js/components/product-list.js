@@ -5,6 +5,7 @@ class ProductList extends BaseComponent {
     super(params);
 
     this._products = params.products;
+    this._parent = params.parent;
     this._render();
   }
 
@@ -18,10 +19,10 @@ class ProductList extends BaseComponent {
     for (let i = 0; i < this._products.length; i++) {
       lis.push(`
         <li class="thumbnail">
-          <a href="${this._products[i].id}" class="thumb">
+          <a data-product-id="${this._products[i].id}" class="thumb">
               <img alt="${this._products[i].name}" src="${this._products[i].imageUrl}">
           </a>
-          <a href="${this._products[i].id}">${this._products[i].name}</a>
+          <a data-product-id="${this._products[i].id}">${this._products[i].name}</a>
           <p>${this._products[i].snippet}</p>
         </li>`);
     }
@@ -31,11 +32,26 @@ class ProductList extends BaseComponent {
          ${lis.join('')}
       </ul>
      `;
+
+    this._addListeners();
   }
 
   set products(products) {
     this._products = products;
     this._render();
+  }
+
+  _addListeners() {
+    this._element.querySelector('.phones')
+      .addEventListener('click', (event) => {
+        if (event.target.closest('a') !== null) {
+          event.preventDefault();
+
+          this._parent.phoneSelected(
+            event.target.closest('a').dataset.productId
+          );
+        }
+       });
   }
 }
 

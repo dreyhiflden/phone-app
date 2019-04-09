@@ -4,6 +4,7 @@ import Sort from './sort.js';
 import ShoppingCart from './shopping-cart.js';
 import ProductList from './product-list.js';
 import PhoneService from '../services/phone-service.js';
+import ProductItem from './product-item.js';
 
 class Page extends BaseComponent {
   constructor(params) {
@@ -26,6 +27,7 @@ class Page extends BaseComponent {
       
            <div class="col-md-10" data-component="product-list"></div>
         </div>
+        <div hidden class="row" data-component="product-item"></div>
       </div>
       `;
   }
@@ -47,11 +49,20 @@ class Page extends BaseComponent {
     this._productList = new ProductList({
       element: this._element.querySelector('[data-component="product-list"]'),
       products: PhoneService.getAll(),
+      parent: this,
+    });
+
+    this._productItem = new ProductItem({
+      element: this._element.querySelector('[data-component="product-item"]'),
     });
   }
 
   searchUpdated(query) {
     this._productList.products = PhoneService.getFiltered(query);
+  }
+
+  phoneSelected(phoneId) {
+    debugger;
   }
 }
 
