@@ -31,7 +31,7 @@ class Products extends BaseComponent {
       </div>`;
   }
 
-  _initComponents() {
+  async _initComponents() {
     this._search = new Search({
       element: this._element.querySelector('[data-component="search"]'),
       eventEmitter: this._eventEmitter,
@@ -49,17 +49,17 @@ class Products extends BaseComponent {
 
     this._productList = new ProductList({
       element: this._element.querySelector('[data-component="product-list"]'),
-      products: PhoneService.getAll(),
+      products: await PhoneService.getAll(),
       eventEmitter: this._eventEmitter,
     });
   }
 
-  searchUpdated(query) {
-    this._productList.products = PhoneService.getFiltered(query);
+  async searchUpdated(query) {
+    this._productList.products = await PhoneService.getFiltered(query);
   }
 
-  sortUpdated(value) {
-    this._productList.products = PhoneService.getSorted(value);
+  async sortUpdated(value) {
+    this._productList.products = await PhoneService.getSorted(value);
   }
 
   clearedSearch() {
