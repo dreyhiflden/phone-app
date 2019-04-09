@@ -14,7 +14,7 @@ class ProductItem extends BaseComponent {
 
     this._element.innerHTML = `
         <div>
-    <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+    <img class="phone" src="img/phones/${this._item.id}.0.jpg">
 
     <button data-action="back">Back</button>
     <button data-action="add-to-cart">Add to cart</button>
@@ -25,24 +25,9 @@ class ProductItem extends BaseComponent {
     <p>${this._item.description}</p>
 
     <ul class="phone-thumbs">
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-      </li>
+      ${this._item.images
+      .map((image, item) => `<li><img src="img/phones/${this._item.id}.${item}.jpg"></li>`)
+      .join('')}
     </ul>
 
     <ul class="specs">
@@ -155,6 +140,12 @@ class ProductItem extends BaseComponent {
     this._element.querySelector('[data-action="back"]')
       .addEventListener('click', () => {
           this._parent.phoneDeselected();
+        }
+      );
+
+    this._element.querySelector('[data-action="add-to-cart"]')
+      .addEventListener('click', () => {
+
         }
       );
   }

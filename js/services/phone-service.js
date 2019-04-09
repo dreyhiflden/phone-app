@@ -11,6 +11,20 @@ class PhoneService {
     });
   }
 
+  static getSorted(value) {
+    return phones.slice().sort((a, b) => {
+      if (a[value] < b[value]) {
+        return -1;
+      }
+
+      if (a[value] > b[value]) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }
+
   static async getPhone(id) {
     return (await import(`../../phones/${id}.js`)).default;
   }

@@ -14,17 +14,17 @@ class Products extends BaseComponent {
 
   _render() {
     this._element.innerHTML = `
-         <div class="row">
-                    <div class="col-md-2">
-                        <section>
-                            <div data-component="search"></div>
-                            <p data-component="sort"></p>
-                        </section>
-                        <section data-component="shopping-cart"></section>
-                     </div>
-                
-                     <div class="col-md-10" data-component="product-list"></div>
-                </div>`;
+      <div class="row">
+        <div class="col-md-2">
+          <section>
+            <div data-component="search"></div>
+            <p data-component="sort"></p>
+          </section>
+          <section data-component="shopping-cart"></section>
+        </div>
+    
+        <div class="col-md-10" data-component="product-list"></div>
+      </div>`;
   }
 
   _initComponents() {
@@ -35,10 +35,12 @@ class Products extends BaseComponent {
 
     this._sort = new Sort({
       element: this._element.querySelector('[data-component="sort"]'),
+      parent: this,
     });
 
     this._shoppingCart = new ShoppingCart({
       element: this._element.querySelector('[data-component="shopping-cart"]'),
+      parent: this,
     });
 
     this._productList = new ProductList({
@@ -53,8 +55,16 @@ class Products extends BaseComponent {
     this._productList.products = PhoneService.getFiltered(query);
   }
 
+  sortUpdated(value) {
+    this._productList.products = PhoneService.getSorted(value);
+  }
+
   phoneSelected(phoneId) {
     this._parent.phoneSelected(phoneId);
+  }
+
+  clearedSearch() {
+    this._search._element.querySelector('input').value = ''
   }
 
 }
