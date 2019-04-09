@@ -12,10 +12,10 @@ class Page extends BaseComponent {
 
   _render() {
     this._element.innerHTML = `
-        <div class="container-fluid">
-          <div data-component="products"></div>
-          <div hidden class="row" data-component="product-item"></div>
-        </div>
+      <div class="container-fluid">
+        <div data-component="products"></div>
+        <div hidden class="row" data-component="product-item"></div>
+      </div>
       `;
   }
 
@@ -41,6 +41,10 @@ class Page extends BaseComponent {
   phoneDeselected() {
     this._products.show();
     this._productItem.hide();
+  }
+
+  addedToCart(item) {
+    this._products.addedToCart(item);
   }
 }
 

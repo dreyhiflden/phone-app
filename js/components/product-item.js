@@ -82,8 +82,8 @@ class ProductItem extends BaseComponent {
           <dl>
             <dt>Dimensions</dt>
             ${this._item.sizeAndWeight.dimensions
-        .map(dimension => `<dd>${dimension}</dd>`)
-        .join('')}
+      .map(dimension => `<dd>${dimension}</dd>`)
+      .join('')}
             <dt>Weight</dt>
             <dd>${this._item.sizeAndWeight.weight}</dd>
           </dl>
@@ -140,7 +140,7 @@ class ProductItem extends BaseComponent {
 
     this._element.querySelector('[data-action="add-to-cart"]')
       .addEventListener('click', () => {
-
+          this._parent.addedToCart(this._item);
         }
       );
   }
@@ -151,7 +151,6 @@ class ProductItem extends BaseComponent {
       item: this._item,
     });
   }
-
 }
 
 export default ProductItem;

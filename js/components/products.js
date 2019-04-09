@@ -48,7 +48,6 @@ class Products extends BaseComponent {
       products: PhoneService.getAll(),
       parent: this,
     });
-
   }
 
   searchUpdated(query) {
@@ -65,6 +64,10 @@ class Products extends BaseComponent {
 
   clearedSearch() {
     this._search._element.querySelector('input').value = ''
+  }
+
+  addedToCart(item) {
+    this._shoppingCart.addItem(item);
   }
 
 }
