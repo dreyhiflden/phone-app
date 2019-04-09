@@ -1,15 +1,30 @@
 import BaseComponent from './base-component.js';
 
 class ProductItem extends BaseComponent {
+  set item(phone) {
+    this._item = phone;
+    this._render();
+    this._addListeners();
+  }
+
   _render() {
+    if (this._item === undefined) {
+      return;
+    }
+
     this._element.innerHTML = `
         <div>
     <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-     <button>Back</button>
-    <button>Add to basket</button>
-     <h1>Motorola XOOM™ with Wi-Fi</h1>
-     <p>Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android™ 3.0 (Honeycomb) — the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you’ll enjoy HD video in a thin, light, powerful and upgradeable tablet.</p>
-     <ul class="phone-thumbs">
+
+    <button data-action="back">Back</button>
+    <button data-action="add-to-cart">Add to cart</button>
+
+
+    <h1>${this._item.name}</h1>
+
+    <p>${this._item.description}</p>
+
+    <ul class="phone-thumbs">
       <li>
         <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
       </li>
@@ -29,7 +44,8 @@ class ProductItem extends BaseComponent {
         <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
       </li>
     </ul>
-     <ul class="specs">
+
+    <ul class="specs">
       <li>
         <span>Availability and Networks</span>
         <dl>
@@ -41,20 +57,20 @@ class ProductItem extends BaseComponent {
         <span>Battery</span>
         <dl>
           <dt>Type</dt>
-          <dd>Other ( mAH)</dd>
+          <dd>${this._item.battery.type}</dd>
           <dt>Talk Time</dt>
-          <dd>24 hours</dd>
+          <dd>${this._item.battery.talkTime}</dd>
           <dt>Standby time (max)</dt>
-          <dd>336 hours</dd>
+          <dd>${this._item.battery.standbyTime}</dd>
         </dl>
       </li>
       <li>
         <span>Storage and Memory</span>
         <dl>
           <dt>RAM</dt>
-          <dd>1000MB</dd>
+          <dd>${this._item.storage.ram}</dd>
           <dt>Internal Storage</dt>
-          <dd>32000MB</dd>
+          <dd>${this._item.storage.flash}</dd>
         </dl>
       </li>
       <li>
@@ -63,78 +79,86 @@ class ProductItem extends BaseComponent {
           <dt>Network Support</dt>
           <dd></dd>
           <dt>WiFi</dt>
-          <dd>802.11 b/g/n</dd>
+          <dd>${this._item.connectivity.wifi}</dd>
           <dt>Bluetooth</dt>
-          <dd>Bluetooth 2.1</dd>
+          <dd>${this._item.connectivity.bluetooth}</dd>
           <dt>Infrared</dt>
-          <dd>✘</dd>
+          <dd>${this._item.connectivity.infrared ? '✓' : '✘'}</dd>
           <dt>GPS</dt>
-          <dd>✓</dd>
+          <dd>${this._item.connectivity.gps ? '✓' : '✘'}</dd>
         </dl>
       </li>
       <li>
         <span>Android</span>
         <dl>
           <dt>OS Version</dt>
-          <dd>Android 3.0</dd>
+          <dd>${this._item.android.os}</dd>
           <dt>UI</dt>
-          <dd>Honeycomb</dd>
+          <dd>${this._item.android.ui}</dd>
         </dl>
       </li>
       <li>
         <span>Size and Weight</span>
         <dl>
           <dt>Dimensions</dt>
-          <dd>249.1 mm (w)</dd>
-          <dd>167.8 mm (h)</dd>
-          <dd>12.9 mm (d)</dd>
+          ${this._item.sizeAndWeight.dimensions
+      .map(dimension => `<dd>${dimension}</dd>`)
+      .join('')}
           <dt>Weight</dt>
-          <dd>708.0 grams</dd>
+          <dd>${this._item.sizeAndWeight.weight}</dd>
         </dl>
       </li>
       <li>
         <span>Display</span>
         <dl>
           <dt>Screen size</dt>
-          <dd>10.1 inches</dd>
+          <dd>${this._item.display.screenSize}</dd>
           <dt>Screen resolution</dt>
-          <dd>WXGA (1200 x 800)</dd>
+          <dd>${this._item.display.screenResolution}</dd>
           <dt>Touch screen</dt>
-          <dd>✓</dd>
+          <dd>${this._item.display.touchScreen ? '✓' : '✘'}</dd>
         </dl>
       </li>
       <li>
         <span>Hardware</span>
         <dl>
           <dt>CPU</dt>
-          <dd>1 GHz Dual Core Tegra 2</dd>
+          <dd>${this._item.hardware.cpu}</dd>
           <dt>USB</dt>
-          <dd>USB 2.0</dd>
+          <dd>${this._item.hardware.usb}</dd>
           <dt>Audio / headphone jack</dt>
-          <dd>3.5mm</dd>
+          <dd>${this._item.hardware.audioJack}</dd>
           <dt>FM Radio</dt>
-          <dd>✘</dd>
+          <dd>${this._item.hardware.fmRadio ? '✓' : '✘'}</dd>
           <dt>Accelerometer</dt>
-          <dd>✓</dd>
+          <dd>${this._item.hardware.accelerometer ? '✓' : '✘'}</dd>
         </dl>
       </li>
       <li>
         <span>Camera</span>
         <dl>
           <dt>Primary</dt>
-          <dd>5.0 megapixels</dd>
+          <dd>${this._item.camera.primary}</dd>
           <dt>Features</dt>
-          <dd>Flash, Video</dd>
+          <dd>${this._item.camera.features.join(', ') || 'None'}</dd>
         </dl>
       </li>
       <li>
         <span>Additional Features</span>
-        <dd>Sensors: proximity, ambient light, barometer, gyroscope</dd>
+        <dd>${this._item.additionalFeatures}</dd>
       </li>
     </ul>
-  </div>
-        `;
+  </div>`;
   }
+
+  _addListeners() {
+    this._element.querySelector('[data-action="back"]')
+      .addEventListener('click', () => {
+          this._parent.phoneDeselected();
+        }
+      );
+  }
+
 }
 
 export default ProductItem;

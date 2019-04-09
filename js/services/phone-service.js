@@ -10,6 +10,10 @@ class PhoneService {
       return phone.name.toLowerCase().includes(query.toLowerCase());
     });
   }
+
+  static async getPhone(id) {
+    return (await import(`../../phones/${id}.js`)).default;
+  }
 }
 
 export default PhoneService;
